@@ -170,8 +170,6 @@ def run_sim(alpha, diff_coeff, trp, log = False, graph=False):
     cumulative_scaling = 1.0
     volume_change = 0.0
     volume_before = 0.0
-    checked = False
-    original = 0.75 * (np.max(ys) - np.min(ys))
     if graph:
         data = []
     for k in range(NUM_CHECKS):
@@ -215,9 +213,6 @@ def run_sim(alpha, diff_coeff, trp, log = False, graph=False):
                 plt.savefig(f'shapes/{k*NUM_ITER + j}.png')
             x_diameter = np.max(xs) - np.min(xs)
             y_diameter = np.max(ys) - np.min(ys)
-            if y_diameter < original and not checked:
-                checked = True
-                print(volume_change)
             if graph:
                 data.append([volume, surface_area, volume_change, solute_volume, dissolved_solid, x_diameter, y_diameter])
         if end != (NUM_CHECKS-1, NUM_ITER-1):
@@ -380,7 +375,6 @@ if LOG:
     for j in range(1, int(end[0]*NUM_ITER + end[1])):
        images.append(Image.open(f'shapes/{j}.png'))
     first_im.save('tootsie_pop2.gif', save_all=True, append_images=images, loop=0)
-    breakpoint()
 
 if GRAPH:
     titles = ['Volume (mm^3) vs. Time (s)', 'Surface Area (mm^2) vs. Time (s)', 'dVdt (mm^3 s^-1) vs. Time (s)', 'Amount of Solvent (mm^3) vs. Time (s)', 'Amount of Solute (g) vs. Time (s)', 'Diameter (mm) vs. Time (s)', 'Height (mm) vs. Time (s)']
@@ -400,4 +394,3 @@ if GRAPH:
     plt.plot(xs[10:], dydt[10:])
     plt.title('dhdt (mm s^-1) vs. Time (s)')
     plt.savefig(f'dhdt (mm s^-1) vs. Time (s).png')
-    breakpoint()
